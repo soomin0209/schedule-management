@@ -3,27 +3,22 @@ package com.schedulemanagement.dto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
-public class GetScheduleResponse {
+public class GetCommentResponse {
 
     private final Long id;
-    private final String title;
     private final String content;
     private final String writer;
     // 응답 비밀번호 제외
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
-    private final List<GetCommentResponse> comments;
 
-    public GetScheduleResponse(Long id, String title, String content, String writer, LocalDateTime createdAt, LocalDateTime modifiedAt, List<GetCommentResponse> comments) {
+    public GetCommentResponse(Long id, String content, String writer, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.id = id;
-        this.title = title;
         this.content = content;
         this.writer = writer;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
-        this.comments = comments;
     }
 }

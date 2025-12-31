@@ -1,7 +1,9 @@
 package com.schedulemanagement.service;
 
 import com.schedulemanagement.dto.*;
+import com.schedulemanagement.entity.Comment;
 import com.schedulemanagement.entity.Schedule;
+import com.schedulemanagement.repository.CommentRepository;
 import com.schedulemanagement.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
@@ -16,6 +18,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final CommentRepository commentRepository;
 
     // 일정 생성
     @Transactional
@@ -43,13 +46,29 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
+
+        // 댓글 작성일을 기준으로 오름차순 정렬
+        List<Comment> comments = commentRepository.findByScheduleIdOrderByCreatedAtAsc(scheduleId);
+        List<GetCommentResponse> dtos = new ArrayList<>();
+        for (Comment comment : comments) {
+            GetCommentResponse dto = new GetCommentResponse(
+                    comment.getId(),
+                    comment.getContent(),
+                    comment.getWriter(),
+                    comment.getCreatedAt(),
+                    comment.getModifiedAt()
+            );
+            dtos.add(dto);
+        }
+
         return new GetScheduleResponse(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getWriter(),
                 schedule.getCreatedAt(),
-                schedule.getModifiedAt()
+                schedule.getModifiedAt(),
+                dtos
         );
     }
 
@@ -72,7 +91,8 @@ public class ScheduleService {
                     schedule.getContent(),
                     schedule.getWriter(),
                     schedule.getCreatedAt(),
-                    schedule.getModifiedAt()
+                    schedule.getModifiedAt(),
+                    new ArrayList<>()
             );
             dtos.add(dto);
         }
