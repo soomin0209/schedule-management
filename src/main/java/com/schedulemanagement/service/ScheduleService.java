@@ -152,7 +152,7 @@ public class ScheduleService {
 
     // 일정 삭제
     @Transactional
-    public void delete(Long scheduleId) {
+    public void delete(Long scheduleId, DeleteScheduleRequest request) {
         boolean existence = scheduleRepository.existsById(scheduleId);
 
         // 존재하지 않으면
