@@ -1,11 +1,10 @@
 package com.schedulemanagement.service;
 
-import com.schedulemanagement.dto.CreateScheduleRequest;
-import com.schedulemanagement.dto.CreateScheduleResponse;
-import com.schedulemanagement.dto.GetScheduleResponse;
+import com.schedulemanagement.dto.*;
 import com.schedulemanagement.entity.Schedule;
 import com.schedulemanagement.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +53,7 @@ public class ScheduleService {
         );
     }
 
+    // 전체 일정 조회
     @Transactional(readOnly = true)
     public List<GetScheduleResponse> findAll(String writer) {
         List<Schedule> schedules;
@@ -77,5 +77,22 @@ public class ScheduleService {
             dtos.add(dto);
         }
         return dtos;
+    }
+
+    // 일정 수정
+    @Transactional
+    public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다.")
+        );
+        schedule.update(request.getTitle(), request.getWriter());
+        return new UpdateScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getWriter(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
     }
 }
