@@ -24,6 +24,13 @@ public class CommentService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
+        
+        // 댓글 개수 확인
+        long commentCount = commentRepository.countByScheduleId(scheduleId);
+        if (commentCount >= 10) {
+            throw new IllegalStateException("하나의 일정에는 댓글을 10개까지만 작성할 수 있습니다.");
+        }
+
         Comment comment = new Comment(
                 request.getContent(),
                 request.getWriter(),
