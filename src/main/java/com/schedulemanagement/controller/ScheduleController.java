@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
@@ -22,8 +24,17 @@ public class ScheduleController {
     }
 
     // 선택 일정 조회
-    @GetMapping("/schedules/{scheduleId")
+    @GetMapping("/schedules/{scheduleId}")
     public ResponseEntity<GetScheduleResponse> getOneSchedule(@PathVariable Long scheduleId) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
+    }
+
+    // 전체 일정 조회
+    // 작성자명 - 선택적 파라미터
+    // /scedules : 전체 조회
+    // /scedules?writer=작성자명 : 작성자명으로 필터링
+    @GetMapping("/schedules")
+    public ResponseEntity<List<GetScheduleResponse>> getAllSchedules(@RequestParam(required = false) String writer) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll(writer));
     }
 }
