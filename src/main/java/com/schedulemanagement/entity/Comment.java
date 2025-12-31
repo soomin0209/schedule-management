@@ -14,8 +14,11 @@ public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 100, nullable = false)
     private String content;
+    @Column(nullable = false)
     private String writer;
+    @Column(nullable = false)
     private String password;
 
     // Schedule과의 관계 설정
