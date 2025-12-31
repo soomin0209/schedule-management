@@ -20,6 +20,20 @@ public class CommentService {
     // 댓글 생성
     @Transactional
     public CreateCommentResponse save(Long scheduleId, CreateCommentRequest request) {
+        //입력 검증
+        if (request.getContent().isBlank()) {
+            throw new IllegalStateException("댓글 내용은 필수값입니다.");
+        }
+        if (request.getContent().length() > 100) {
+            throw new IllegalStateException("댓글 내용은 최대 100자 입니다.");
+        }
+        if (request.getWriter().isBlank()) {
+            throw new IllegalStateException("작성자명은 필수값입니다.");
+        }
+        if (request.getPassword().isBlank()) {
+            throw new IllegalStateException("비밀번호는 필수값입니다.");
+        }
+
         // 존재하는 일정인지 확인
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")

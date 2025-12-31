@@ -23,6 +23,26 @@ public class ScheduleService {
     // 일정 생성
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request) {
+        // 입력 검증
+        if (request.getTitle().isBlank()) {
+            throw new IllegalStateException("일정 제목은 필수값입니다.");
+        }
+        if (request.getTitle().length() > 30) {
+            throw new IllegalStateException("일정 제목은 최대 30자 입니다.");
+        }
+        if (request.getContent().isBlank()) {
+            throw new IllegalStateException("일정 내용은 필수값입니다.");
+        }
+        if (request.getContent().length() > 200) {
+            throw new IllegalStateException("일정 내용은 최대 200자 입니다.");
+        }
+        if (request.getWriter().isBlank()) {
+            throw new IllegalStateException("작성자명은 필수값입니다.");
+        }
+        if (request.getPassword().isBlank()) {
+            throw new IllegalStateException("비밀번호는 필수값입니다.");
+        }
+
         Schedule schedule = new Schedule(
                 request.getTitle(),
                 request.getContent(),
@@ -102,6 +122,20 @@ public class ScheduleService {
     // 일정 수정
     @Transactional
     public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request) {
+        // 입력 검증
+        if (request.getTitle().isBlank()) {
+            throw new IllegalStateException("일정 제목은 필수값입니다.");
+        }
+        if (request.getTitle().length() > 30) {
+            throw new IllegalStateException("일정 제목은 최대 30자 입니다.");
+        }
+        if (request.getWriter().isBlank()) {
+            throw new IllegalStateException("작성자명은 필수값입니다.");
+        }
+        if (request.getPassword().isBlank()) {
+            throw new IllegalStateException("비밀번호는 필수값입니다.");
+        }
+
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
