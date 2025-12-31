@@ -21,16 +21,16 @@ public class CommentService {
     @Transactional
     public CreateCommentResponse save(Long scheduleId, CreateCommentRequest request) {
         //입력 검증
-        if (request.getContent().isBlank()) {
+        if (request.getContent() == null || request.getContent().isBlank()) {
             throw new IllegalStateException("댓글 내용은 필수값입니다.");
         }
         if (request.getContent().length() > 100) {
             throw new IllegalStateException("댓글 내용은 최대 100자 입니다.");
         }
-        if (request.getWriter().isBlank()) {
+        if (request.getWriter() == null || request.getWriter().isBlank()) {
             throw new IllegalStateException("작성자명은 필수값입니다.");
         }
-        if (request.getPassword().isBlank()) {
+        if (request.getPassword() == null || request.getPassword().isBlank()) {
             throw new IllegalStateException("비밀번호는 필수값입니다.");
         }
 

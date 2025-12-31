@@ -24,22 +24,22 @@ public class ScheduleService {
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request) {
         // 입력 검증
-        if (request.getTitle().isBlank()) {
+        if (request.getTitle() == null || request.getTitle().isBlank()) {
             throw new IllegalStateException("일정 제목은 필수값입니다.");
         }
         if (request.getTitle().length() > 30) {
             throw new IllegalStateException("일정 제목은 최대 30자 입니다.");
         }
-        if (request.getContent().isBlank()) {
+        if (request.getContent() == null || request.getContent().isBlank()) {
             throw new IllegalStateException("일정 내용은 필수값입니다.");
         }
         if (request.getContent().length() > 200) {
             throw new IllegalStateException("일정 내용은 최대 200자 입니다.");
         }
-        if (request.getWriter().isBlank()) {
+        if (request.getWriter() == null || request.getWriter().isBlank()) {
             throw new IllegalStateException("작성자명은 필수값입니다.");
         }
-        if (request.getPassword().isBlank()) {
+        if (request.getPassword() == null || request.getPassword().isBlank()) {
             throw new IllegalStateException("비밀번호는 필수값입니다.");
         }
 
@@ -123,16 +123,16 @@ public class ScheduleService {
     @Transactional
     public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request) {
         // 입력 검증
-        if (request.getTitle().isBlank()) {
+        if (request.getTitle() == null || request.getTitle().isBlank()) {
             throw new IllegalStateException("일정 제목은 필수값입니다.");
         }
         if (request.getTitle().length() > 30) {
             throw new IllegalStateException("일정 제목은 최대 30자 입니다.");
         }
-        if (request.getWriter().isBlank()) {
+        if (request.getWriter() == null || request.getWriter().isBlank()) {
             throw new IllegalStateException("작성자명은 필수값입니다.");
         }
-        if (request.getPassword().isBlank()) {
+        if (request.getPassword() == null || request.getPassword().isBlank()) {
             throw new IllegalStateException("비밀번호는 필수값입니다.");
         }
 
