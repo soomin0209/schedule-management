@@ -138,6 +138,12 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("없는 일정입니다.")
         );
+
+        // 비밀번호 검증
+        if (!request.getPassword().equals(schedule.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+
         schedule.update(request.getTitle(), request.getWriter());
         return new UpdateScheduleResponse(
                 schedule.getId(),
@@ -152,13 +158,16 @@ public class ScheduleService {
     // 일정 삭제
     @Transactional
     public void delete(Long scheduleId, DeleteScheduleRequest request) {
-        boolean existence = scheduleRepository.existsById(scheduleId);
 
-        // 존재하지 않으면
-        if (!existence) {
-            throw new IllegalStateException("없는 일정입니다.");
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("없는 일정입니다.")
+        );
+
+        // 비밀번호 검증
+        if (!request.getPassword().equals(schedule.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
-        // 존재하면
+
         scheduleRepository.deleteById(scheduleId);
     }
 }
